@@ -1,0 +1,81 @@
+import os
+
+# Fill in your worlds here
+do_worlds = ['darless', 'creative1']
+
+for world in do_worlds:
+  worlds[world] = '{}/.minecraft/saves/{}'.format(os.getenv('HOME'), world)
+
+def add_render(settings):
+  if not settings:
+    print "ERROR: no settings provided"
+    return 1
+  name = settings['name']
+  world = settings['world']
+  title = '{} {}'.format(world, name)
+  rendermode = settings.get('rendermode')
+  dimension = settings.get('dimension')
+  direction = settings.get('direction')
+
+  result = {
+    'world': world,
+    'title': '{} {}'.format(world, name)
+  }
+
+  # If this is an overlay don't add the world name
+  # and strip overlay string
+  overlay_str = 'overlay-'
+  if name.find(overlay_str) >= 0:
+    result['title'] = name.lstrip(overlay_str)
+
+  if rendermode is not None:
+    result['rendermode'] = rendermode
+  if dimension is not None:
+    result['dimension'] = dimension
+  if direction is not None:
+    result['northdirection'] = direction
+  return result
+
+render_dict = {
+  'day': normal,
+  'cave': cave,
+ 
+  # Overlays
+  'overlay-minerals': [ClearBase(), Cave(), MineralOverlay()],
+  'overlay-spawn':    [ClearBase(), Cave(), SpawnOverlay()],
+
+  # Only include nether if there's actually a nether dimention
+  #'nether' : nether,
+}
+
+# Default 'upper-left'
+# Possible directions: 'upper-left', 'upper-right', 'lower-left', 'lower-right'
+direction = 'upper-left'
+
+for world in do_worlds:
+  for key,val in render_dict.items():
+    # Defaults
+    settings = {}
+    settings['world'] = world
+    settings['name'] = key
+    settings['rendermode'] = val
+    settings['dimension'] = 'overworld'
+    settings['direction'] = direction
+
+    if key.find('nether') >= 0:
+      settings['dimension'] = 'nether'
+    render_key = '{}_{}'.format(world, key)
+    renders[render_key] = add_render(settings)
+
+print "Total number of renders: {}".format(len(renders.keys()))
+
+# Where to put the map
+map_name = 'mcmap'
+
+# In the home directory
+home_map = '{}/{}'.format(os.getenv('HOME'), map_name)
+
+# In the current directory
+here_map = './{}'.format(map_name)
+
+outputdir = here_map
