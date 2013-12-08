@@ -7,8 +7,9 @@ Requirements
 ============
 
 1. You must have Minecraft Overviewer already installed
-..* http://overviewer.org/
+    http://overviewer.org/
 2. You are running a Linux device
+3. Your game saves are located in HOME/.minecraft/saves
 
 How to use
 ==========
@@ -21,12 +22,11 @@ The rest of the settings are set as defaults
 Settings
 ========
 
-do_worlds
-: The worlds to create maps for
-render_dict
-: The map types and overlays to create
-direction
-: Which direction to draw the maps
-outputdir
-: Where to store the result
+__do_worlds__: The worlds to create maps for
+
+__render_dict__: The map types and overlays to create
+
+__direction__: Which direction to draw the maps
+
+__outputdir__: Where to store the result
 
